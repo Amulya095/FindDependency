@@ -1,0 +1,123 @@
+<template>
+   <lightning-card title="Metadata Dependency Explorer" icon-name="custom:custom10" class="slds-card">
+      <lightning-combobox name="metdataType"
+         label="Metadata Type"
+         placeholder="Select Type"
+         options={types}
+         onchange={handleType}>
+      </lightning-combobox>
+      <template if:true={isApexSelected}>
+         <lightning-combobox name="objects"
+            label="Select Class"
+            placeholder="Select Class"
+            value={selectedApex}
+            options={apexList}
+            onchange={handleApexChange}>
+         </lightning-combobox>
+      </template>
+
+      <template if:true={isObjectSelected}>
+         <lightning-combobox name="objects"
+            label="Select Object"
+            placeholder="Select Object"
+            value={object}
+            options={objectList}
+            onchange={handleObjects}>
+         </lightning-combobox>
+      </template>
+
+
+      <template if:true={isLightningSelected}>
+         <lightning-combobox name="Comp"
+            label="Select Lightning Component"
+            placeholder="Select Lightning Component"
+            value={selectedComp}
+            options={compList}
+            onchange={handleCompChange}
+            class="slds-combobox">
+         </lightning-combobox>
+      </template>
+
+      <!----------- this handles when the metadatatype selected is FIeld-------->
+      <template if:true={isFieldSelected}>
+         <lightning-combobox name="Object"
+            label="Object"
+            placeholder="Select Object"
+            options={objectList}
+            value={object}
+            onchange={handleObjectList}
+            class="slds-combobox">
+         </lightning-combobox>
+         <lightning-combobox name="field"
+            label="Select Field"
+            placeholder="Select Field"
+            options={fieldList}
+            value={selectedField}
+            onchange={handleFieldSelect}
+            class="slds-combobox">
+         </lightning-combobox>
+         <!--adding my code here to select the metadata type-->
+         <!-- <lightning-checkbox-group name="metadata Type"
+            label="Metadata Type"
+            placeholder="Please select the metadata type"
+            options={metadataTypeOptions}
+            value={selectedMetadataTypes}
+            onchange={handleMetadataChangeType}
+            class="slds-checkbox-group">
+         </lightning-checkbox-group>
+         <lightning-button variant="base" 
+            label="select All"  
+            onclick={handleSelectAll}
+            class="slds-button">
+         </lightning-button>
+         <div>
+            <br></br>
+            <lightning-button class="slds-button slds-button_brand"
+               label="Submit"
+               variant="brand"
+               onclick={handleSumit}>
+            </lightning-button>
+         </div> -->
+      </template>
+         <lightning-checkbox-group name="metadata Type"
+            label="Metadata Type"
+            placeholder="Please select the metadata type"
+            options={metadataTypeOptions}
+            value={selectedMetadataTypes}
+            onchange={handleMetadataChangeType}
+            class="slds-checkbox-group">
+         </lightning-checkbox-group>
+         <lightning-button variant="base" 
+            label="select All"  
+            onclick={handleSelectAll}
+            class="slds-button">
+         </lightning-button>
+         <div>
+            <br></br>
+            <lightning-button class="slds-button slds-button_brand"
+               label="Submit"
+               variant="brand"
+               onclick={handleSumit}>
+            </lightning-button>
+         </div>
+        <template if:true={showDownLoad}>
+            <div class="slds-grid slds-wrap">
+            
+                <div>
+                    <lightning-button class="slds-button" label="Export in CSV" onclick={handleFileDownload}></lightning-button>
+                </div>
+                <div class="slds-size--1-of-1">
+                    <div class="slds-float_left slds-m-around_medium">
+                        <lightning-datatable class="slds-datatable" key-field="id" 
+                            data={fields}
+                            columns={columns}
+                            show-row-number-column
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </div>
+            </div>
+        </template>
+      
+   </lightning-card>
+</template>

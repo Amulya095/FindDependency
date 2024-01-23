@@ -1,0 +1,39 @@
+.slds-card {
+  width: 700px;
+  height: 355px;
+  margin: 0 auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: Salesforce Sans, sans-serif;
+}
+
+.slds-combobox {
+  width: 250px;
+  margin: 10px;
+}
+
+.slds-checkbox-group {
+  margin: 10px;
+}
+
+.slds-button {
+  margin: 10px;
+}
+
+.slds-datatable {
+  width: 100%;
+  height: 200px;
+}
+
+.slds-button.slds-button_brand {
+  background-color: accent-color;
+  color: #fff;
+}
+
+.slds-highlight {
+  background-color: accent-color;
+  color: #fff;
+}
+.slds-button.slds-button_brand:hover {
+  /* Implement your desired hover effect here */
+}
