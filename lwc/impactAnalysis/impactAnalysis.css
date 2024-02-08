@@ -1,0 +1,23 @@
+.slds-is-relative {
+    position: relative;
+}
+
+.slds-blur {
+    filter: blur(5px); /* Adjust the blur intensity as needed */
+}
+
+.slds-spinner_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.slds-brand-band {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 70%;
+}

@@ -1,0 +1,83 @@
+<!-- searchSuggestionsLWC.html -->
+<template>
+    <div class="slds-brand-band" style="height:100%;width:70%">
+        <lightning-card title="Search Component">
+            <div class="slds-grid slds-gutters">
+                <!-- Dropdown Input -->
+                <div class="slds-col">
+                    <lightning-combobox
+                        label="Select a metadata type"
+                        value={selectedOption}
+                        options={dropdownOptions}
+                        onchange={handleDropdownChange}
+                        required="true">
+                        
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- Search Input -->
+            <div class="slds-grid slds-gutters">
+                <div class={searchContainerClass} style={searchContainerStyle}>
+                    <lightning-input
+                        label="Search"
+                        type="search"
+                        value={searchTerm}
+                        onchange={handleSearchChange}
+                        disabled={isSearchDisabled}>
+                    </lightning-input>
+                    <div if:true={showSuggestions} class="slds-scrollable_y" style="height:17rem;width:54rem" tabindex="0">
+                        <ul class="slds-listbox slds-listbox_vertical" role="listbox">
+                            <template for:each={filteredOptions} for:item="filteredOption">
+                                <li key={filteredOption.value} role="presentation" class="slds-listbox__item" onclick={handleSuggestionClick} data-value={filteredOption.value}>
+                                    <div role="option" class="slds-media slds-listbox__option slds-listbox__option_entity">
+                                        <span class="slds-media__body">
+                                            <span class="slds-truncate" title={filteredOption.label}>{filteredOption.label}</span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                    <div if:true={isLoading} class="slds-is-relative">
+                        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>    
+                    </div>
+                    <lightning-button label="Where is this used" onclick={handleWhereIsThisUsed}></lightning-button>
+                </div>
+            </div>
+            <template if:true={showDownLoad}>
+                <div class="slds-grid slds-wrap">
+                    <div style={tableContainerStyle} class="slds-size--1-of-1">
+                    <div>
+                        <lightning-button class="slds-button" label="Export in CSV" onclick={handleFileDownload}></lightning-button>
+                    </div>
+                    <div class="slds-size--1-of-1">
+                        <div class="slds-float_left slds-m-around_medium">
+                            <!-- Use a regular HTML table instead of lightning-datatable -->
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Metadata Component Id</th>
+                                        <th scope="col">Metadata Component Name</th>
+                                        <th scope="col">Metadata Component Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Use a template for-each to iterate over the fields -->
+                                    <template for:each={fields} for:item="field">
+                                        <tr key={field.MetadataComponentId}>
+                                            <td data-label="Metadata Component Id">{field.MetadataComponentId}</td>
+                                            <td data-label="Metadata Component Name">{field.MetadataComponentName}</td>
+                                            <td data-label="Metadata Component Type">{field.MetadataComponentType}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </lightning-card>
+    </div>
+</template>
