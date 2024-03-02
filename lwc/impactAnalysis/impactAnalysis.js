@@ -10,20 +10,14 @@ export default class SearchSuggestionsLWC extends LightningElement {
     @track isLoading = false;
     @track isSearchDisabled=true;
 
+    @track fieldsWithLinks = [];
     @track selectedValue = '';
     @track fields = [];
     @track dropdownOptions = [
-        {
-            label: 'Email Template',
-            value: 'EmailTemplate'
-        },
+        
         {
             label: 'Custom and Standard Object',
             value: 'CustomAndStandardObject'
-        },
-        {
-            label: 'Layout',
-            value: 'Layout'
         },
         {
             label: 'Custom Field',
@@ -32,6 +26,10 @@ export default class SearchSuggestionsLWC extends LightningElement {
         {
             label: 'Apex Class',
             value: 'ApexClass'
+        },
+        {
+            label: 'Lightning Component Bundle',
+            value: 'LightningComponentBundle'
         },
         {
             label: 'Custom Label',
@@ -43,17 +41,14 @@ export default class SearchSuggestionsLWC extends LightningElement {
             value: 'Report'
         },
         {
-            label: 'Lookup Filter',
-            value: 'LookupFilter'
-        },
-        {
             label: 'Experience Bundle',
             value: 'ExperienceBundle'
         },
         {
-            label: 'Lightning Component Bundle',
-            value: 'LightningComponentBundle'
+            label: 'Email Template',
+            value: 'EmailTemplate'
         }
+
     ];
 
     handleDropdownChange(event) {
@@ -69,17 +64,21 @@ export default class SearchSuggestionsLWC extends LightningElement {
             return `slds-col slds-p-relative ${this.selectedOption ? '' : 'slds-is-relative'}`;
         }
 
-        get isSearchDisabled() {
-            return !this.selectedOption;
-        }
-
-        get searchContainerStyle() {
-            return this.showSuggestions ? 'width: 70%' : '';
-        }
-
-        get tableContainerStyle() {
-            return this.selectedOption ? 'width: 70%' : '';
+    get isSearchDisabled() {
+        return !this.selectedOption;
     }
+
+    get searchContainerStyle() {
+        return this.showSuggestions ? 'width: 70%' : '';
+    }
+
+    get tableContainerStyle() {
+        return this.selectedOption ? 'width: 70%' : '';
+    }
+
+
+
+
 
     handleSearchChange(event) {
         this.searchTerm = event.target.value;
@@ -96,7 +95,7 @@ export default class SearchSuggestionsLWC extends LightningElement {
         if (this.selectedOption.length > 0) {
             try {
                 this.suggestions = await getSearchSuggestions({ metadataType: this.selectedOption});
-                console.log('suggestions = '+JSON.stringify(this.suggestions ));
+                
             } catch (error) {
                 // Handle error
                 console.error('Error fetching suggestions:', error);
@@ -114,12 +113,11 @@ export default class SearchSuggestionsLWC extends LightningElement {
     }
     handleSuggestionClick(event) {
         this.selectedValue = event.currentTarget.dataset.value;
-        console.log('selected value---'+this.selectedValue);
 
-        const selectedOption = this.suggestions.find(option => option.value === this.selectedValue);
+        this.selectedOption = this.suggestions.find(option => option.value === this.selectedValue);
 
-        if (selectedOption) {
-            this.searchTerm = selectedOption.label;
+        if (this.selectedOption) {
+            this.searchTerm = this.selectedOption.label;
             this.showSuggestions = false;
         }
     }
@@ -128,15 +126,34 @@ export default class SearchSuggestionsLWC extends LightningElement {
     handleWhereIsThisUsed(event){
         console.log('selected value---'+this.selectedValue);
         this.isLoading = true;
-        getDepdency({id: this.selectedValue})
+        const objWithField = this.selectedOption.label.split('.');
+        console.log('print object and field'+objWithField);
+        getDepdency({id: this.selectedValue, objWithField: objWithField})
         .then(data => {
         this.showDownLoad = true;
         if(data){
-            console.log('this fields--'+JSON.stringify(this.fields));
             this.fields = data;
             this.isLoading = false;
             }
         })
-
     }
+
+    handleFileDownload(event) {
+        if (this.fields !== undefined) {
+            let csvContent = "data:text/csv;charset=utf-8,";
+
+            this.fields.forEach(function(rowArray) {
+                let row = rowArray.MetadataComponentName + "," + rowArray.MetadataComponentType + ",";
+                csvContent += row + "\r\n";
+            });
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Dependent.csv");
+            document.body.appendChild(link);
+            link.click();
+        }
+    }
+
+
 }

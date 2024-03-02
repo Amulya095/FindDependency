@@ -1,7 +1,8 @@
 <!-- searchSuggestionsLWC.html -->
 <template>
     <div class="slds-brand-band" style="height:100%;width:70%">
-        <lightning-card title="Search Component">
+        <lightning-card class="slds-card">
+            <!--<h1 slot="title" class="h2">Dependency Finder</h1>-->
             <div class="slds-grid slds-gutters">
                 <!-- Dropdown Input -->
                 <div class="slds-col">
@@ -42,17 +43,23 @@
                     <div if:true={isLoading} class="slds-is-relative">
                         <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>    
                     </div>
-                    <lightning-button label="Where is this used" onclick={handleWhereIsThisUsed}></lightning-button>
+                    <!-- <lightning-button class="slds-button slds-button_brand" label="Where is this used" onclick={handleWhereIsThisUsed}></lightning-button> -->
+                    <div class="button_custom">
+                        <button class="slds-button slds-button_inverse" disabled={isSearchDisabled} style="background-color:#0b829d;white;" onclick={handleWhereIsThisUsed}>Where is this used</button>
+                    </div>
                 </div>
             </div>
             <template if:true={showDownLoad}>
                 <div class="slds-grid slds-wrap">
                     <div style={tableContainerStyle} class="slds-size--1-of-1">
-                    <div>
+                    <!-- <div>
                         <lightning-button class="slds-button" label="Export in CSV" onclick={handleFileDownload}></lightning-button>
+                    </div> -->,
+                    <div class="button_custom">
+                        <button class="slds-button slds-button_inverse" disabled={isSearchDisabled} style="background-color:#0b829d;white;" onclick={handleFileDownload}>Export in CSV</button>
                     </div>
                     <div class="slds-size--1-of-1">
-                        <div class="slds-float_left slds-m-around_medium">
+                        <div class="slds-float_left slds-m-around_medium" style="width:136%;border:1px dotted #bdc8cc;">
                             <!-- Use a regular HTML table instead of lightning-datatable -->
                             <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                                 <thead>
@@ -66,7 +73,11 @@
                                     <!-- Use a template for-each to iterate over the fields -->
                                     <template for:each={fields} for:item="field">
                                         <tr key={field.MetadataComponentId}>
-                                            <td data-label="Metadata Component Id">{field.MetadataComponentId}</td>
+                                            <td data-label="Metadata Component Id">
+                                            <a href={field.MetadataComponentUrl} target="_blank">
+                                                {field.MetadataComponentId}
+                                            </a>
+                                            </td>
                                             <td data-label="Metadata Component Name">{field.MetadataComponentName}</td>
                                             <td data-label="Metadata Component Type">{field.MetadataComponentType}</td>
                                         </tr>
