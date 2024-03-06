@@ -8,7 +8,7 @@
                 <div class="slds-col">
                     <lightning-combobox
                         label="Select a metadata type"
-                        value={selectedOption}
+                        value={selectedMetadataType}
                         options={dropdownOptions}
                         onchange={handleDropdownChange}
                         required="true">
@@ -44,22 +44,18 @@
                         <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>    
                     </div>
                     <!-- <lightning-button class="slds-button slds-button_brand" label="Where is this used" onclick={handleWhereIsThisUsed}></lightning-button> -->
-                    <div class="button_custom">
-                        <button class="slds-button slds-button_inverse" disabled={isSearchDisabled} style="background-color:#0b829d;white;" onclick={handleWhereIsThisUsed}>Where is this used</button>
+                    <div>
+                        <button class="button_custom" disabled={isSearchDisabled} onclick={handleWhereIsThisUsed}>Where is this used</button>
                     </div>
                 </div>
             </div>
             <template if:true={showDownLoad}>
                 <div class="slds-grid slds-wrap">
-                    <div style={tableContainerStyle} class="slds-size--1-of-1">
-                    <!-- <div>
-                        <lightning-button class="slds-button" label="Export in CSV" onclick={handleFileDownload}></lightning-button>
-                    </div> -->,
-                    <div class="button_custom">
-                        <button class="slds-button slds-button_inverse" disabled={isSearchDisabled} style="background-color:#0b829d;white;" onclick={handleFileDownload}>Export in CSV</button>
-                    </div>
                     <div class="slds-size--1-of-1">
-                        <div class="slds-float_left slds-m-around_medium" style="width:136%;border:1px dotted #bdc8cc;">
+                        <button class="export-to-excel" disabled={isSearchDisabled}  onclick={handleFileDownload}>Export in CSV</button>
+
+                    <div class="slds-size--1-of-1">
+                        <div >
                             <!-- Use a regular HTML table instead of lightning-datatable -->
                             <table class="slds-table slds-table_bordered slds-table_cell-buffer">
                                 <thead>

@@ -4,6 +4,7 @@ import getSearchSuggestions from '@salesforce/apex/ImpactAnalysisController.getS
 import getDepdency from '@salesforce/apex/ImpactAnalysisController.getDepdency';
 export default class SearchSuggestionsLWC extends LightningElement {
     @track selectedOption;
+    @track selectedMetadataType;
     @track searchTerm = '';
     @track suggestions = [];
     @track showSuggestions = false;
@@ -52,29 +53,29 @@ export default class SearchSuggestionsLWC extends LightningElement {
     ];
 
     handleDropdownChange(event) {
-        this.selectedOption = event.detail.value;
+        this.selectedMetadataType = event.detail.value;
+        this.searchTerm=null;
+        this.showDownLoad = false;
+        this.fields=null;
         this.isLoading=true;
         console.log('loading' + this.isLoading);
-        //console.log(JSON.stringify(this.selectedOption));
+        console.log(JSON.stringify(this.selectedMetadataType));
         
         this.fetchSuggestions();
     }
 
     get searchContainerClass() {
-            return `slds-col slds-p-relative ${this.selectedOption ? '' : 'slds-is-relative'}`;
+            return `slds-col slds-p-relative ${this.selectedMetadataType ? '' : 'slds-is-relative'}`;
         }
 
     get isSearchDisabled() {
-        return !this.selectedOption;
+        return !this.selectedMetadataType;
     }
 
     get searchContainerStyle() {
         return this.showSuggestions ? 'width: 70%' : '';
     }
 
-    get tableContainerStyle() {
-        return this.selectedOption ? 'width: 70%' : '';
-    }
 
 
 
@@ -92,9 +93,10 @@ export default class SearchSuggestionsLWC extends LightningElement {
     }
 
      async fetchSuggestions() {
-        if (this.selectedOption.length > 0) {
+         this.isSearchDisabled=true;
+        if (this.selectedMetadataType.length > 0) {
             try {
-                this.suggestions = await getSearchSuggestions({ metadataType: this.selectedOption});
+                this.suggestions = await getSearchSuggestions({ metadataType: this.selectedMetadataType});
                 
             } catch (error) {
                 // Handle error
@@ -106,7 +108,7 @@ export default class SearchSuggestionsLWC extends LightningElement {
         }
         this.isLoading=false;
         this.isSearchDisabled=false;
-        const index=this.dropdownOptions.findIndex(obj=>obj.value==this.selectedOption);
+        const index=this.dropdownOptions.findIndex(obj=>obj.value==this.selectedMetadataType);
         console.log('index='+index)
         this.dropdownOptions[index].label+= ' ('+ this.suggestions.length +')';
         this.dropdownOptions = [...this.dropdownOptions];
@@ -132,6 +134,7 @@ export default class SearchSuggestionsLWC extends LightningElement {
         .then(data => {
         this.showDownLoad = true;
         if(data){
+            console.log('data'+JSON.stringify(this.fields));
             this.fields = data;
             this.isLoading = false;
             }

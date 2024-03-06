@@ -36,27 +36,46 @@
     padding: 12px;
 } 
 
-button_custom {
-    background-color: #128eb8;
-    padding: 2px;
-    width: 180px;
+.button_custom {
+    background-color: rgb(11, 130, 157);
+    padding: 6px;
+    cursor: pointer;
     border-radius: 5px;
-    margin-top: 5px;
+    margin-top: 10px;
     text-align: center;
     border: none;
     color: white;
+    font-size: 13px;
+    font-weight: 400;
+}
+.button_custom:hover{
+    background-color: rgb(7 97 118);
+}
+button_custom:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
 }
 
+.export-to-excel{
+    background-color: white;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    text-align: center;
+    border: none;
+    color: rgb(46 97 126);
+    font-size: 13px;
+    font-weight: 400;
+    float:right;
+}
 .slds-table {
-    width: 100%;
-    /*margin-top: 20px;*/
+    margin-top: 20px;
+    margin-left: 0;
 }
 
 .slds-table th, .slds-table td {
     text-align: left;
-    border: 1px dotted #bdc8cc;;
-}
-
-.slds-button {
-    margin-top: 10px;
+    border: 1px dotted #bdc8cc;
+    border-spacing: 2px;
 }

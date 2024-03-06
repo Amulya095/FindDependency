@@ -10,6 +10,7 @@ public class DependentInfo {
 		public String url {get;set;} 
     }
     public class Record {
+        @AuraEnabled
 		public String MetadataComponentId {get;set;} 
         @AuraEnabled
 		public String MetadataComponentName {get;set;} 
@@ -17,6 +18,7 @@ public class DependentInfo {
 		public String RefMetadataComponentId {get;set;} 
         @AuraEnabled
         public String MetadataComponentType {get;set;} 
+    
     } 
     
     public static DependentInfo parse(String json){
